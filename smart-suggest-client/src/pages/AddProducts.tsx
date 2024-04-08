@@ -7,6 +7,7 @@ import {
   Typography,
   Grid,
 } from '@mui/material';
+
 import Layout from '../layout/Layout';
 
 const AddProductForm = () => {
@@ -18,8 +19,9 @@ const AddProductForm = () => {
     e.preventDefault();
     // Add your logic to handle the form submission here
     // For example, you can create a new product object and add it to a list or store it in localStorage
-    console.log('Product:', { name, price, image });
-    // Reset the form fields
+    // console.log('Product:', { name, price, image });
+    // Reset the form fields of the products
+  
     setName('');
     setPrice('');
     setImage('');
