@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 import {
   Box,
   Button,
@@ -6,14 +6,14 @@ import {
   TextField,
   Typography,
   Grid,
-} from '@mui/material';
+} from "@mui/material";
 
-import Layout from '../layout/Layout';
+import Layout from "../layout/Layout";
 
 const AddProductForm = () => {
-  const [name, setName] = useState('');
-  const [price, setPrice] = useState('');
-  const [image, setImage] = useState('');
+  const [name, setName] = useState("");
+  const [price, setPrice] = useState("");
+  const [image, setImage] = useState("");
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -21,10 +21,10 @@ const AddProductForm = () => {
     // For example, you can create a new product object and add it to a list or store it in localStorage
     // console.log('Product:', { name, price, image });
     // Reset the form fields of the products
-  
-    setName('');
-    setPrice('');
-    setImage('');
+
+    setName("");
+    setPrice("");
+    setImage("");
   };
 
   return (
