@@ -52,6 +52,12 @@ module.exports = (sequelize) => {
       },
       refreshToken: {
         type: DataTypes.STRING,
+      },
+      isAdmin: {
+        type: DataTypes.BOOLEAN,
+      },
+      isUser: {
+        type: DataTypes.BOOLEAN
       }
     },
     {

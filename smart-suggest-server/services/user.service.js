@@ -21,6 +21,8 @@ exports.register = async (userData) => {
         phoneNumber: userData.phoneNumber,
         password: hashed,
         address: userData.address,
+        isAdmin: false,
+        isUser: true
       });
     });
   } catch (err) {
@@ -63,6 +65,7 @@ exports.login = async (req, res, next) => {
       uuid: user.uuid,
       token,
       refreshToken,
+      user,
     });
   } catch (err) {
     throw err;

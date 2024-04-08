@@ -18,3 +18,27 @@ exports.validateToken = (req, res, next) => {
     });
   }
 };
+
+exports.validateRole = (roles) => {
+  return (req, res, next) => {
+    let isAuthorized = false;
+    roles.forEach((role) => {
+      if (role === "admin") {
+        if (req?.user?.isAdmin) {
+          isAuthorized = true;
+          return;
+        }
+      } else if (role === "user") {
+        if (req?.user?.isUser) {
+          isAuthorized = true;
+          return;
+        }
+      }
+    });
+    if (isAuthorized) {
+      next();
+    } else {
+      res.status(401).send("Unauthorized");
+    }
+  };
+};
