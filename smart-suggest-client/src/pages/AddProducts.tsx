@@ -8,12 +8,16 @@ import {
   Grid,
 } from '@mui/material';
 import Layout from '../layout/Layout';
+import { useParams } from 'react-router-dom';
 
 const AddProductForm = () => {
   const [name, setName] = useState('');
   const [price, setPrice] = useState('');
   const [image, setImage] = useState('');
 
+  const params = useParams();
+  console.log(params.id);
+  const isEdit = params.id ? true : false;
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     // Add your logic to handle the form submission here
@@ -30,7 +34,7 @@ const AddProductForm = () => {
       <Container maxWidth="sm">
         <Box mt={4}>
           <Typography variant="h4" align="center" gutterBottom>
-            Add Product
+            {isEdit ? 'Edit Product' : 'Add Product'}
           </Typography>
           <form onSubmit={handleSubmit}>
             <Grid container spacing={2}>
@@ -69,7 +73,7 @@ const AddProductForm = () => {
                   color="primary"
                   fullWidth
                 >
-                  Add Product
+                  {isEdit ? 'Edit Product' : 'Add Product'}
                 </Button>
               </Grid>
             </Grid>

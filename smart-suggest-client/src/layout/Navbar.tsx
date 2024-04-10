@@ -2,7 +2,6 @@ import {
   AppBar,
   Toolbar,
   IconButton,
-  Typography,
   Badge,
   InputBase,
   Box,
@@ -12,6 +11,7 @@ import { Search, ShoppingCart, AccountCircle } from '@material-ui/icons';
 
 import { useNavigate } from 'react-router-dom';
 import useTotalNumber from '../store/useTotalNumber';
+import Logo from '../assets/logo.png';
 
 const Navbar = () => {
   const cartItemsLength = useTotalNumber((state) => state.totalNo);
@@ -27,17 +27,16 @@ const Navbar = () => {
       >
         <Container>
           <Toolbar>
-            <Typography
-              style={{ cursor: 'pointer' }}
+            <img
               onClick={() => navigate('/')}
-              variant="h6"
-            >
-              Smart Suggest
-            </Typography>
+              alt={Logo}
+              style={{ height: '40px' }}
+              src={Logo}
+            />
             <Box display="flex" alignItems="center">
               <InputBase
                 color="primary"
-                placeholder="Search for products, categories or brands..."
+                placeholder="Search for items"
                 style={{
                   marginLeft: 60,
                   width: 650,

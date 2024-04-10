@@ -1,0 +1,14 @@
+assests-> images, logo, tab ma vako image
+components-> Reusable pieces, Eg : Table, Card, Button etc
+expression-> static data
+layout-> overall layout
+pages-> pages
+store-> state for all pages
+App.tsx-> routing
+index.css-> styling
+main.tsx-> main file for application
+.gitignore-> git ko lagi
+index.html-> html main file
+package-lock.json-> dependencies lock for same version
+package.json-> dependencies for the project
+Readme.md-> instructions for project setup

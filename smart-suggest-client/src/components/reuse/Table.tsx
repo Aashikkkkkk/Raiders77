@@ -7,6 +7,8 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import { TableData } from '../../pages/AdminPage';
+import { Button } from '@material-ui/core';
+import { useNavigate } from 'react-router-dom';
 
 interface IProps<T extends TableData> {
   tableHeaders: string[];
@@ -17,6 +19,7 @@ export default function CustomTable<T extends TableData>({
   tableHeaders,
   tableRows,
 }: IProps<T>) {
+  const navigate = useNavigate();
   return (
     <TableContainer component={Paper}>
       <Table sx={{ minWidth: 650 }} aria-label="simple table">
@@ -41,6 +44,11 @@ export default function CustomTable<T extends TableData>({
               <TableCell>{row.name}</TableCell>
               <TableCell>{row.price}</TableCell>
               <TableCell>{row.status}</TableCell>
+              <TableCell>
+                <Button onClick={() => navigate('/edit-products/' + row.id)}>
+                  Edit
+                </Button>
+              </TableCell>
             </TableRow>
           ))}
         </TableBody>

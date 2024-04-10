@@ -19,17 +19,14 @@ import {
 import CloseIcon from '@material-ui/icons/Close';
 import CheckCircleOutlineIcon from '@material-ui/icons/CheckCircleOutline';
 import Layout from '../layout/Layout';
+import useTotalNumber from '../store/useTotalNumber';
 
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
     padding: theme.spacing(3),
   },
-  form: {
-    '& > *': {
-      marginBottom: theme.spacing(2),
-    },
-  },
+
   summary: {
     marginTop: theme.spacing(3),
   },
@@ -70,7 +67,7 @@ const CheckoutPage = () => {
   });
   const [isOrderPlaced, setIsOrderPlaced] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-
+  const { clearAll } = useTotalNumber((state) => state);
   const handleChange = (e: any) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
@@ -78,10 +75,11 @@ const CheckoutPage = () => {
   const handleSubmit = (e: any) => {
     e.preventDefault();
     setIsLoading(true);
-    // Simulating an API call or order processing
+
     setTimeout(() => {
       setIsLoading(false);
       setIsOrderPlaced(true);
+      clearAll();
     }, 2000);
   };
 
@@ -97,40 +95,39 @@ const CheckoutPage = () => {
         <Typography variant="h4" gutterBottom>
           Checkout
         </Typography>
-        <form onSubmit={handleSubmit} className={classes.form}>
-          <Grid container spacing={2}>
-            <Grid item xs={12}>
-              <TextField
-                name="name"
-                label="Name"
-                variant="outlined"
-                fullWidth
-                value={formData.name}
-                onChange={handleChange}
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <TextField
-                name="email"
-                label="Email"
-                variant="outlined"
-                fullWidth
-                value={formData.email}
-                onChange={handleChange}
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <TextField
-                name="address"
-                label="Address"
-                variant="outlined"
-                fullWidth
-                value={formData.address}
-                onChange={handleChange}
-              />
-            </Grid>
-          </Grid>
+
+        <Box component="form" onSubmit={handleSubmit} sx={{ mt: 1 }}>
+          <TextField
+            margin="normal"
+            required
+            fullWidth
+            name="username"
+            label="Username"
+            type="username"
+            id="username"
+          />
+          <TextField
+            type="email"
+            margin="normal"
+            required
+            fullWidth
+            id="email"
+            label="Email Address"
+            name="email"
+            autoComplete="email"
+            autoFocus
+          />
+          <TextField
+            margin="normal"
+            required
+            fullWidth
+            name="address"
+            label="Address"
+            type="address"
+            id="address"
+          />
           <Button
+            style={{ marginTop: '30px' }}
             type="submit"
             variant="contained"
             color="primary"
@@ -138,7 +135,7 @@ const CheckoutPage = () => {
           >
             {isLoading ? <CircularProgress size={24} /> : 'Place Order'}
           </Button>
-        </form>
+        </Box>
         <Card className={classes.summary}>
           <CardContent>
             <Typography variant="h6" gutterBottom>

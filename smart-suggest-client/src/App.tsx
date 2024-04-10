@@ -8,6 +8,7 @@ import AllProductsPage from './pages/AllProductsPage';
 import AdminPage from './pages/AdminPage';
 import Register from './pages/RegisterScreen';
 import AddProductForm from './pages/AddProducts';
+import ProductDetails from './pages/ProductDetails';
 function App() {
   const router = createBrowserRouter([
     {
@@ -43,7 +44,15 @@ function App() {
       element: <AllProductsPage />,
     },
     {
-      path: 'add-products',
+      path: '/add-products',
+      element: <AddProductForm />,
+    },
+    {
+      path: '/products/:id',
+      element: <ProductDetails />,
+    },
+    {
+      path: '/edit-products/:id',
       element: <AddProductForm />,
     },
   ]);

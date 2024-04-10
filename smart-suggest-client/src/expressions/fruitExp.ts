@@ -1,7 +1,7 @@
 const fruits = [
   {
     id: 1,
-    name: 'Large Bagged Oranges',
+    name: 'Large Oranges ',
     price: 3.99,
     image:
       'https://images.unsplash.com/photo-1581074817932-af423ba4566e?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8d2F0ZXJtZWxvbnxlbnwwfHwwfHx8MA%3D%3D',
@@ -29,7 +29,7 @@ const fruits = [
   },
   {
     id: 5,
-    name: 'Sweet Strawberries (per pound)',
+    name: 'Sweet Strawberries ',
     price: 4.99,
     image:
       'https://images.unsplash.com/photo-1581074817932-af423ba4566e?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8d2F0ZXJtZWxvbnxlbnwwfHwwfHx8MA%3D%3D',

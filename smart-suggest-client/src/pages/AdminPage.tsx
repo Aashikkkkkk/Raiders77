@@ -10,7 +10,7 @@ export interface TableData {
 }
 
 const AdminPage = () => {
-  const tableHeaders = ['id', 'name', 'price', 'status'];
+  const tableHeaders = ['id', 'name', 'price', 'status', 'Action'];
   const tableDatas: TableData[] = [
     { id: '1', name: 'Apple', price: '100', status: 'Pending' },
     { id: '2', name: 'Orange', price: '200', status: 'Approved' },
