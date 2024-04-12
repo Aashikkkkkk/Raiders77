@@ -46,7 +46,14 @@ module.exports.getCartByUserId = async (id) => {
     const cart = await cartRepository.getCartByUserId(id);
     if (!cart) throw new Error("No cart associated with user");
     const items = await cartItemRepository.getAllCartItemsByCartId(cart.uuid);
-    return { cartDetails: cart, cartItems: items };
+    var responseData = [];
+    if(items.length >0) {
+      for(var item of items) {
+        var itemData = await itemRepository.getItemById(item.item_uuid);
+        responseData.push({...item.dataValues, item: {...itemData.dataValues}});
+      }
+    }
+    return { cartDetails: cart, cartItems: responseData };
   } catch (error) {
     throw error;
   }
