@@ -1,16 +1,27 @@
 const cartRepository = require("../repositories/cart.repository");
 const cartItemRepository = require("../repositories/cartItem.repository");
 const itemRepository = require("../repositories/item.repository");
+const axios = require("axios");
+
 
 module.exports.addToCart = async (userId, cartDetails) => {
   try {
     var cart = await cartRepository.getCartByUserId(userId);
     if (!cart) cart = await cartRepository.create({ user_uuid: userId });
     cartItemRepository.deleteAllCartItemsByCartId(cart.uuid);
+    var recommendedItems = [];
+    var recommendationPayload = cartDetails.cartItems.map(item => item.item_uuid)
+    const response = await axios.post("http://3.146.206.90:8000/predict", recommendationPayload);
+    
+    for(var data of response) {
+      const fetchedItem = itemRepository.getItemByName();
+      if(fetchedItem)      recommendedItems.push();
+    }
+
     cartDetails.cartItems.forEach((item) =>
       cartItemRepository.create({ ...item, cart_uuid: cart.uuid })
     );
-    return cart;
+    return {cart,recommendedItems};
   } catch (error) {
     throw error;
   }
