@@ -9,19 +9,24 @@ module.exports.addToCart = async (userId, cartDetails) => {
     var cart = await cartRepository.getCartByUserId(userId);
     if (!cart) cart = await cartRepository.create({ user_uuid: userId });
     cartItemRepository.deleteAllCartItemsByCartId(cart.uuid);
-    var recommendedItems = [];
-    var recommendationPayload = cartDetails.cartItems.map(item => item.item_uuid)
-    const response = await axios.post("http://3.146.206.90:8000/predict", recommendationPayload);
-    
-    for(var data of response) {
-      const fetchedItem = itemRepository.getItemByName();
-      if(fetchedItem)      recommendedItems.push();
-    }
+    // var recommendationPayloadPromises = cartDetails.cartItems.map(async item => {
+    //   const data = await itemRepository.getItemById(item.item_uuid);
+    //   return data.name;
+    // });
+
+    // const recommendationPayload = await Promise.all(recommendationPayloadPromises);
+    // const response = await axios.post("http://3.146.206.90:8000/predict", recommendationPayload);
+    // var recommendedItems = [];
+    // for(var data of response) {
+    //   const fetchedItem = await itemRepository.getItemByName();
+    //   if(fetchedItem)      recommendedItems.push(fetchedItem);
+    // }
 
     cartDetails.cartItems.forEach((item) =>
       cartItemRepository.create({ ...item, cart_uuid: cart.uuid })
     );
-    return {cart,recommendedItems};
+    return {cart};
+    // return {cart,recommendedItems};
   } catch (error) {
     throw error;
   }
@@ -64,7 +69,20 @@ module.exports.getCartByUserId = async (id) => {
         responseData.push({...item.dataValues, item: {...itemData.dataValues}});
       }
     }
-    return { cartDetails: cart, cartItems: responseData };
+
+    var recommendationPayloadPromises = items.map(async item => {
+      const data = await itemRepository.getItemById(item.item_uuid);
+      return data.name;
+    });
+
+    const recommendationPayload = await Promise.all(recommendationPayloadPromises);
+    const response = await axios.post("http://3.146.206.90:8000/predict", {items: recommendationPayload});
+    var recommendedItems = [];
+    for(var data of response.data) {
+      const fetchedItem = await itemRepository.getItemByName(data);
+      if(fetchedItem)      recommendedItems.push(fetchedItem);
+    }
+    return { cartDetails: cart, cartItems: responseData, recommendedItems };
   } catch (error) {
     throw error;
   }
