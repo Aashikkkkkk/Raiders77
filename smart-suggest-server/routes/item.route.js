@@ -11,6 +11,8 @@ router.post(
   itemController.createItem
 );
 
+router.get("/search", itemController.searchItems);
+
 router.get("/", itemController.getAllItems);
 
 router.get("/:id", itemController.getItemById);

@@ -58,3 +58,12 @@ module.exports.updateItemById = async (id, itemDetails) => {
     throw error;
   }
 };
+
+module.exports.searchItemByName = async (name) => {
+  try {
+    const results = await itemRepository.searchItemByName(name);
+    return results;
+  } catch (error) {
+    throw error;
+  }
+};

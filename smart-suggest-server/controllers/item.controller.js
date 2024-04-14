@@ -53,3 +53,16 @@ exports.updateItemById = async (req, res, next) => {
     next(error);
   }
 };
+
+exports.searchItems = async (req, res, next) => {
+  try {
+    const { name } = req.query;
+    var foundItems = await service.searchItemByName(name);
+    res.send({
+      items: foundItems,
+    });
+    return foundItems;
+  } catch (error) {
+    next(error);
+  }
+};

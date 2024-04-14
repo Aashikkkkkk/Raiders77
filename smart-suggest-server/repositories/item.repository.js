@@ -1,4 +1,6 @@
 const { Items } = require("../models");
+const {Op} = require("sequelize")
+
 module.exports.create = async (itemDetails) => {
   try {
     const item = await Items.create(itemDetails);
@@ -58,6 +60,20 @@ module.exports.updateItemById = async (id, itemDetails) => {
       where: { uuid: id },
     });
     return result;
+  } catch (error) {
+    throw error;
+  }
+};
+
+module.exports.searchItemByName = async (name) => {
+  try {
+    return await Items.findAll({
+      where: {
+        name: {
+          [Op.like]: `%${name}%`,
+        },
+      },
+    });
   } catch (error) {
     throw error;
   }
