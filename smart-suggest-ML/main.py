@@ -14,7 +14,7 @@ class FilterItems(BaseModel):
 file_path = 'book.csv'
 
 def generate_association_rules(records):
-    association_rules = apyori_apriori(records, min_support=0.0045, min_confidence=0.6, min_length=2)
+    association_rules = apyori_apriori(records, min_support=0.0045, min_confidence=0.2, min_length=2)
     results = list(association_rules)
     return results
 
