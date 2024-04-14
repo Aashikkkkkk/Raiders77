@@ -1,1 +1,1 @@
-export const baseApiUrl = 'http://3.146.206.90:3000';
+export const baseApiUrl = 'http://18.189.193.196:3000';
