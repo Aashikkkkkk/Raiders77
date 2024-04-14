@@ -1,71 +1,101 @@
-import { Container, Grid, Snackbar, Typography } from '@material-ui/core';
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { Container, Grid, Typography } from '@material-ui/core';
 import { ArrowRightAltSharp } from '@material-ui/icons';
 import ProductCard from '../reuse/ProductCard';
-import { fruits } from '../../expressions/fruitExp';
 import { Link, useNavigate } from 'react-router-dom';
-import { Product, CartItem } from '../../pages/AllProductsPage';
-import React, { useState } from 'react';
-import { Alert } from '@mui/material';
-import useTotalNumber from '../../store/useTotalNumber';
+import { useMutation, useQuery, useQueryClient } from 'react-query';
+import { privateAxios } from '../../intercepts/axiosIntercepts';
+import useAuth from '../../store/useAuth';
+import toast from 'react-hot-toast';
 
-const HomeDetails = () => {
+const HomeDetails = ({
+  data,
+  isLoading,
+}: {
+  data: any;
+  isLoading: boolean;
+}) => {
   const navigate = useNavigate();
-  const [cart, setCart] = useState<CartItem[]>([]);
-  const [open, setOpen] = React.useState(false);
-  const dispatch = useTotalNumber((state) => state.setTotalNo);
-
-  React.useEffect(() => {
-    const cartItems = JSON.parse(localStorage.getItem('cart') || '[]');
-    setCart(cartItems);
-  }, []);
+  const qc = useQueryClient();
   const handleClick = (e: Event) => {
     e.stopPropagation();
-    setOpen(true);
   };
-  const handleAddToCart = (id: number, product: Product) => {
-    const existingProduct = cart.find((item) => item.id === id);
 
-    if (existingProduct) {
-      const updatedCart = cart.map((item) =>
-        item.id === id ? { ...item, quantity: item.quantity + 1 } : item
+  const mutation = useMutation({
+    mutationKey: ['cart'],
+
+    onError: (error: any) => {
+      toast.error(
+        error?.response?.data?.message ||
+          error.message ||
+          'Something went wrong'
       );
-      setCart(updatedCart);
-      localStorage.setItem('cart', JSON.stringify(updatedCart));
-      dispatch(updatedCart.length);
-    } else {
-      const newCart: CartItem[] = [...cart, { ...product, quantity: 1 }];
-      setCart(newCart);
-      localStorage.setItem('cart', JSON.stringify(newCart));
-      dispatch(newCart.length);
-    }
-  };
-  const handleClose = (
-    _event?: React.SyntheticEvent | Event,
-    reason?: string
-  ) => {
-    if (reason === 'clickaway') {
-      return;
-    }
+    },
+    mutationFn: (data: any) => {
+      return privateAxios
+        .post(`/api/carts`, data, {
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: 'Bearer ' + useAuth.getState().token,
+          },
+        })
+        .then((res) => res.data);
+    },
+    onSuccess: () => {
+      toast.success('Added in cart successfully');
+      qc.invalidateQueries(['cartitems-notification-count']);
+      qc.invalidateQueries(['cartitems-data-handler-homepage']);
+    },
+  });
 
-    setOpen(false);
+  const {
+    data: cartData,
+    isLoading: cartLoading,
+    isError: cartIsError,
+  } = useQuery<any, any>({
+    queryKey: ['cartitems-data-handler-homepage'],
+    retry: 0,
+    queryFn: () => {
+      return privateAxios
+        .get(`/api/carts`, {
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: 'Bearer ' + useAuth.getState().token,
+          },
+        })
+        .then((res) => res.data);
+    },
+  });
+  const handleAddToCart = (id: number) => {
+    if (!cartIsError) {
+      const cart = cartData?.cartItems;
+      const item = cart?.filter((item: any) => item.item_uuid === id);
+
+      const updatedCart = cart.map((el) => {
+        return {
+          item_uuid: el?.item?.uuid,
+          quantity: el?.quantity,
+        };
+      });
+
+      if (item[0]) {
+        toast.error('Item already in cart');
+      } else {
+        mutation.mutate({
+          cartItems: [...updatedCart, { item_uuid: id, quantity: 1 }],
+        });
+      }
+    } else {
+      if (!cartLoading) {
+        mutation.mutate({
+          cartItems: [{ item_uuid: id, quantity: 1 }],
+        });
+      }
+    }
   };
+
   return (
     <Container>
-      <Snackbar
-        anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
-        open={open}
-        autoHideDuration={6000}
-        onClose={handleClose}
-      >
-        <Alert
-          onClose={handleClose}
-          severity="success"
-          variant="filled"
-          sx={{ width: '100%' }}
-        >
-          Added in cart succssfully
-        </Alert>
-      </Snackbar>
       <div
         style={{
           padding: '10px 20px',
@@ -101,9 +131,6 @@ const HomeDetails = () => {
           <Typography variant="subtitle1">
             We have prepared special discounts for you
           </Typography>
-          <Typography style={{ marginTop: '30px' }} variant="h5" color="error">
-            
-          </Typography>
         </div>
 
         <div
@@ -123,27 +150,35 @@ const HomeDetails = () => {
             View All <ArrowRightAltSharp />
           </Link>
         </div>
-        <Grid container>
-          {fruits.map((f) => (
-            <Grid
-              onClick={() => navigate('/products/' + f.id)}
-              item
-              xs={12}
-              sm={6}
-              md={4}
-              lg={2}
-            >
-              <ProductCard
-                handleClick={handleClick}
-                handleCart={handleAddToCart}
-                id={f.id}
-                name={f.name}
-                price={f.price.toString()}
-                img={f.image}
-              />
-            </Grid>
-          ))}
-        </Grid>
+        {isLoading ? (
+          <div>Loading...</div>
+        ) : (
+          <Grid container>
+            {data?.slice(0, 10)?.map((f: any) => (
+              <Grid
+                onClick={() => navigate('/products/' + f.uuid)}
+                item
+                xs={12}
+                sm={6}
+                md={4}
+                lg={2}
+              >
+                <ProductCard
+                  quantity={f.quantity}
+                  handleClick={handleClick}
+                  handleCart={handleAddToCart}
+                  id={f.uuid}
+                  name={f.name}
+                  price={f.price.toString()}
+                  img={
+                    f.image_url ||
+                    'https://media.istockphoto.com/id/1055079680/vector/black-linear-photo-camera-like-no-image-available.jpg?s=612x612&w=0&k=20&c=P1DebpeMIAtXj_ZbVsKVvg-duuL0v9DlrOZUvPG6UJk='
+                  }
+                />
+              </Grid>
+            ))}
+          </Grid>
+        )}
       </div>
     </Container>
   );

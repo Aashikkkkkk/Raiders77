@@ -9,6 +9,8 @@ import AdminPage from './pages/AdminPage';
 import Register from './pages/RegisterScreen';
 import AddProductForm from './pages/AddProducts';
 import ProductDetails from './pages/ProductDetails';
+import ProfilePage from './pages/ProilePage';
+import SearchProducts from './pages/SearchProducts';
 function App() {
   const router = createBrowserRouter([
     {
@@ -54,6 +56,14 @@ function App() {
     {
       path: '/edit-products/:id',
       element: <AddProductForm />,
+    },
+    {
+      path: '/profile',
+      element: <ProfilePage />,
+    },
+    {
+      path: '/search',
+      element: <SearchProducts />,
     },
   ]);
   return (

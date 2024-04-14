@@ -2,19 +2,32 @@ import { Button, Container, Typography } from '@material-ui/core';
 import Layout from '../layout/Layout';
 import CustomTable from '../components/reuse/Table';
 import { useNavigate } from 'react-router-dom';
+import { useQuery } from 'react-query';
+import { privateAxios } from '../intercepts/axiosIntercepts';
+import useAuth from '../store/useAuth';
 export interface TableData {
-  id: string;
+  uuid: string;
   name: string;
   price: string;
   status: string;
 }
 
 const AdminPage = () => {
-  const tableHeaders = ['id', 'name', 'price', 'status', 'Action'];
-  const tableDatas: TableData[] = [
-    { id: '1', name: 'Apple', price: '100', status: 'Pending' },
-    { id: '2', name: 'Orange', price: '200', status: 'Approved' },
-  ];
+  const { data: fruits, isLoading } = useQuery({
+    queryKey: ['homepage-list'],
+    queryFn: () =>
+      privateAxios
+        .get(`/api/items`, {
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: 'Bearer ' + useAuth.getState().token,
+          },
+        })
+        .then((res) => res.data),
+    retry: 5,
+  });
+  const tableHeaders = ['name', 'price', 'Action'];
+  const tableDatas: TableData[] = fruits;
   const navigate = useNavigate();
   return (
     <Layout>
@@ -27,8 +40,11 @@ const AdminPage = () => {
             Add Products
           </Button>
         </div>
-
-        <CustomTable tableRows={tableDatas} tableHeaders={tableHeaders} />
+        {isLoading ? (
+          <div>Loading...</div>
+        ) : (
+          <CustomTable tableRows={tableDatas} tableHeaders={tableHeaders} />
+        )}
       </Container>
     </Layout>
   );

@@ -7,20 +7,15 @@ import {
   Button,
 } from '@material-ui/core';
 import { Add } from '@material-ui/icons';
-import { Product } from '../../pages/AllProductsPage';
 
-interface IProps {
-  id: number;
-  img: string;
-  name: string;
-  price: string;
-  handleCart: (id: number, product: Product) => void;
-  handleClick: (e: Event) => void;
-}
-const ProductCard = (props: IProps) => {
+const ProductCard = (props: any) => {
   return (
     <Card style={{ height: '100%', position: 'relative', cursor: 'pointer' }}>
       <CardMedia
+        onError={(e) => {
+          e.currentTarget.src =
+            'https://media.istockphoto.com/id/1055079680/vector/black-linear-photo-camera-like-no-image-available.jpg?s=612x612&w=0&k=20&c=P1DebpeMIAtXj_ZbVsKVvg-duuL0v9DlrOZUvPG6UJk=';
+        }}
         component="img"
         alt="Large Bagged Oranges"
         height="170"
@@ -47,7 +42,8 @@ const ProductCard = (props: IProps) => {
               id: props.id,
               name: props.name,
               price: Number(props.price),
-              image: props.img,
+              image: props.image_url,
+              totalQty:props.quantity
             });
             props.handleClick(e);
             // dispatch(cartItemsLength + 1);

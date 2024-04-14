@@ -1,0 +1,6 @@
+1. Since there was no data in cartitems and I couldnot create (throws 422 error), so I couldnot put the necessary changes.
+   To do that just go to CartPage.tsx and put according to json data response in the code.
+
+2. Always login inorder to view the webapp since BE code needs auth user for most of the time.
+
+3. Go to expressions/apiExp.ts file and change the baseAPiUrl to suitable url since I was running it locally

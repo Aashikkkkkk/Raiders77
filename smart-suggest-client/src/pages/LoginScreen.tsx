@@ -10,6 +10,10 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { Link, useNavigate } from 'react-router-dom';
+import { useMutation } from 'react-query';
+import { publicAxios } from '../intercepts/axiosIntercepts';
+import toast from 'react-hot-toast';
+import useAuth from '../store/useAuth';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 
@@ -17,14 +21,37 @@ import { Link, useNavigate } from 'react-router-dom';
 const defaultTheme = createTheme();
 
 export default function SignIn() {
-  const navuigate = useNavigate();
+  const auth = useAuth();
+  const [email, setEmail] = React.useState('');
+  const [password, setPassword] = React.useState('');
+  const navigate = useNavigate();
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    if (data) {
-      navuigate('/');
-    }
+    mutation.mutate({ email, password });
   };
+
+  const mutation = useMutation({
+    mutationKey: 'login',
+    mutationFn: (data: { email: string; password: string }) =>
+      publicAxios
+        .post('/auth/login', data, {
+          headers: { 'Content-Type': 'application/json' },
+        })
+        .then((res) => res.data),
+    onSuccess: (data: { refreshToken: string; user: any }) => {
+      localStorage.removeItem('token');
+      localStorage.removeItem('user');
+      auth.setUser(data.user);
+      auth.setToken(data.refreshToken);
+      localStorage.setItem('token', data.refreshToken);
+      localStorage.setItem('user', JSON.stringify(data.user));
+      toast.success('Login successful');
+      navigate('/');
+    },
+    onError: (error: Error) => {
+      toast.error(error.message);
+    },
+  });
 
   return (
     <ThemeProvider theme={defaultTheme}>
@@ -46,6 +73,7 @@ export default function SignIn() {
           </Typography>
           <Box component="form" onSubmit={handleSubmit} sx={{ mt: 1 }}>
             <TextField
+              value={email}
               type="email"
               margin="normal"
               required
@@ -55,8 +83,10 @@ export default function SignIn() {
               name="email"
               autoComplete="email"
               autoFocus
+              onChange={(e) => setEmail(e.target.value)}
             />
             <TextField
+              value={password}
               margin="normal"
               required
               fullWidth
@@ -65,6 +95,7 @@ export default function SignIn() {
               type="password"
               id="password"
               autoComplete="current-password"
+              onChange={(e) => setPassword(e.target.value)}
             />
 
             <Button

@@ -38,14 +38,11 @@ export default function CustomTable<T extends TableData>({
               key={row.name}
               sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
             >
-              <TableCell component="th" scope="row">
-                {row.id}
-              </TableCell>
               <TableCell>{row.name}</TableCell>
               <TableCell>{row.price}</TableCell>
-              <TableCell>{row.status}</TableCell>
+
               <TableCell>
-                <Button onClick={() => navigate('/edit-products/' + row.id)}>
+                <Button onClick={() => navigate('/edit-products/' + row.uuid)}>
                   Edit
                 </Button>
               </TableCell>
