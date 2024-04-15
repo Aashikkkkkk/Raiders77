@@ -76,7 +76,7 @@ module.exports.getCartByUserId = async (id) => {
     });
 
     const recommendationPayload = await Promise.all(recommendationPayloadPromises);
-    const response = await axios.post("http://3.146.206.90:8000/predict", {items: recommendationPayload});
+    const response = await axios.post("http://3.14.145.74:8000/predict", {items: recommendationPayload});
     var recommendedItems = [];
     for(var data of response.data) {
       const fetchedItem = await itemRepository.getItemByName(data);
