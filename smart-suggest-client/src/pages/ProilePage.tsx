@@ -8,7 +8,7 @@ const ProfilePage = () => {
     <Layout>
       <Container>
         <Typography variant="h6">Profile Page</Typography>
-        //
+        <Typography variant="body1">Name: {auth?.userName}</Typography>
         <Typography variant="body1">Email: {auth?.email}</Typography>
       </Container>
     </Layout>

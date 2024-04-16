@@ -38,6 +38,7 @@ const ProductCard = (props: any) => {
         <IconButton
           // eslint-disable-next-line @typescript-eslint/no-explicit-any
           onClick={(e: any) => {
+            
             props.handleCart(props.id, {
               id: props.id,
               name: props.name,
