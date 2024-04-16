@@ -75,7 +75,9 @@ export default function Register() {
               type="password"
               id="password"
               autoComplete="current-password"
+              autoFocus
             />
+
 
             <Button
               type="submit"

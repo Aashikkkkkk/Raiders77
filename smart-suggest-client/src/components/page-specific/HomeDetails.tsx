@@ -80,15 +80,17 @@ const HomeDetails = ({
 
       if (item[0]) {
         toast.error('Item already in cart');
-      } else {
+         } else {
         mutation.mutate({
           cartItems: [...updatedCart, { item_uuid: id, quantity: 1 }],
+          
         });
       }
     } else {
       if (!cartLoading) {
         mutation.mutate({
           cartItems: [{ item_uuid: id, quantity: 1 }],
+          
         });
       }
     }
@@ -106,13 +108,15 @@ const HomeDetails = ({
           className="home-details-image"
           src="https://images.unsplash.com/photo-1534531173927-aeb928d54385?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
         />
+      
+
         <div style={{ position: 'absolute', top: '180px', left: '90px' }}>
           <Typography
             style={{ fontWeight: 'bolder' }}
             color="primary"
             variant="h4"
           >
-            Shopping with us for{' '}
+            Shopping with us for {' '}
           </Typography>
           <Typography
             style={{ fontWeight: 'bolder' }}
@@ -129,9 +133,10 @@ const HomeDetails = ({
             price
           </Typography>
           <Typography variant="subtitle1">
-            We have prepared special discounts for you
+            We have many items for you
           </Typography>
         </div>
+
 
         <div
           className="flex"
@@ -173,7 +178,7 @@ const HomeDetails = ({
                   img={
                     f.image_url ||
                     'https://media.istockphoto.com/id/1055079680/vector/black-linear-photo-camera-like-no-image-available.jpg?s=612x612&w=0&k=20&c=P1DebpeMIAtXj_ZbVsKVvg-duuL0v9DlrOZUvPG6UJk='
-                  }
+              }
                 />
               </Grid>
             ))}

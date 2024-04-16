@@ -109,6 +109,7 @@ const AllProductsPage = () => {
       if (!cartLoading) {
         mutation.mutate({
           cartItems: [{ item_uuid: id, quantity: 1 }],
+          
         });
       }
     }

@@ -299,8 +299,8 @@ const CartPage = () => {
                         <TableCell align="right">Price</TableCell>
                         <TableCell align="center">Available Quantity</TableCell>
                         <TableCell align="center">Quantity</TableCell>
-
-                        <TableCell align="right">Subtotal</TableCell>
+                       <TableCell align="right">Subtotal</TableCell>
+                        
                       </TableRow>
                     </TableHead>
                     <TableBody>
@@ -344,8 +344,8 @@ const CartPage = () => {
                             </TableCell>
                             <TableCell align="center">
                               <ButtonGroup
-                                variant="outlined"
-                                aria-label="Basic button group"
+                                variant="outlined"//this is quantity increase and decrease outline guide
+                                aria-label="Basic button group" //quantity visual represnation for user
                               >
                                 <Button
                                   onClick={() =>
@@ -387,7 +387,7 @@ const CartPage = () => {
               <Grid item xs={4}>
                 <Box className={classes.total} component={Paper}>
                   <Box>
-                    <Typography variant="h6">Cart totals</Typography>
+                    <Typography variant="h6">Cart Totals</Typography>
                     <div
                       style={{
                         marginTop: '20px',
@@ -480,7 +480,7 @@ const CartPage = () => {
             <Typography variant="h5">Recommended Products</Typography>
             <Grid container>
               {data?.recommendedItems?.length === 0 ? (
-                <Typography variant="h6">No recommended products</Typography>
+                <Typography variant="h6">No recommended products to display</Typography>
               ) : (
                 data?.recommendedItems?.map((f) => (
                   <Grid
