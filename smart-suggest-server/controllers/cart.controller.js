@@ -27,8 +27,8 @@ exports.checkout = async (req, res, next) => {
 
 exports. getCartByUserId = async (req, res, next) => {
   try {
-    const categories = await service.getCartByUserId(req.user.uuid);
-    res.send(categories);
+    const cart = await service.getCartByUserId(req.user.uuid);
+    res.send(cart);
   } catch (error) {
     next(error);
   }

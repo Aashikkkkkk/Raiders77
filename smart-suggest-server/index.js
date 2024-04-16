@@ -32,3 +32,8 @@ app.listen(3000, () => {
     console.log("DB synchronized");
   });
 });
+
+app.on('clientError', (err, socket) => {
+  console.error('ClientError:', err);
+  socket.destroy();
+});
