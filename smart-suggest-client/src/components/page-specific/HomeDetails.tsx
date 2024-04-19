@@ -82,14 +82,14 @@ const HomeDetails = ({
         toast.error('Item already in cart');
          } else {
         mutation.mutate({
-          cartItems: [ ],
+          cartItems: [...updatedCart, { item_uuid: id, quantity: 1 }],
           
         });
       }
     } else {
       if (!cartLoading) {
         mutation.mutate({
-          cartItems: [],
+          cartItems: [{ item_uuid: id, quantity: 1 }],
           
         });
       }
