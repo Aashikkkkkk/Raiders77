@@ -1,5 +1,6 @@
 const itemRepository = require("../repositories/item.repository");
 
+//Checks if an item with the specified name already exists. If not, it creates a new item with the provided details and returns the created item.
 module.exports.createItem = async (itemDetails) => {
   try {
     const alreadyExists = await itemRepository.getItemByName(itemDetails.name);
@@ -14,6 +15,7 @@ module.exports.createItem = async (itemDetails) => {
   }
 };
 
+// Fetch and returns all items from the repository.
 module.exports.getAllItems = async () => {
   try {
     const res = await itemRepository.getAllItems();
@@ -23,6 +25,7 @@ module.exports.getAllItems = async () => {
   }
 };
 
+//Retrieves and returns an item by its ID.
 module.exports.getItemById = async (id) => {
   try {
     const item = await itemRepository.getItemById(id);
@@ -31,7 +34,7 @@ module.exports.getItemById = async (id) => {
     throw error;
   }
 };
-
+//Deletes an item by its ID.
 module.exports.deleteItemById = async (id) => {
   try {
     const result = await itemRepository.deleteItemById(id);
@@ -41,6 +44,7 @@ module.exports.deleteItemById = async (id) => {
   }
 };
 
+//First checks if another item with the same name exists 
 module.exports.updateItemById = async (id, itemDetails) => {
   try {
     const alreadyExists = await itemRepository.getItemByName(itemDetails.name);
@@ -49,6 +53,7 @@ module.exports.updateItemById = async (id, itemDetails) => {
         throw new Error(
           "Item with name '" + itemDetails.name + "' already exists"
         );
+    //If no such conflict exists, it updates the item with the provided details. 
     const result = await itemRepository.updateItemById(id, itemDetails);
     if (result[0] !== 1) throw new Error("Item with given ID not found");
     else if (result[0] == 1) {
@@ -60,6 +65,7 @@ module.exports.updateItemById = async (id, itemDetails) => {
   }
 };
 
+//Searches for and returns all items matching the provided name.
 module.exports.searchItemByName = async (name) => {
   try {
     const results = await itemRepository.searchItemByName(name);

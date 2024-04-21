@@ -18,7 +18,7 @@ exports.checkout = async (req, res, next) => {
     const cart = await service.checkout(req.user.uuid);
     res.status(201).json({
       message: "Cart checked out successfully",
-      cart: cart,
+      cart: cart,  
     });
   } catch (error) {
     next(error);

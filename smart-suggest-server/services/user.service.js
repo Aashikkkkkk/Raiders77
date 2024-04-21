@@ -9,10 +9,12 @@ exports.register = async (userData) => {
     if (user != null) {
       throw new Error("user with given email is already registered");
     }
+    // Using bycrpt library  to secure hash in password, 10 is cost factor
     bcrypt.hash(userData.password, 10, async function (err, hashed) {
       if (err) {
         throw new Error(err.message);
       }
+      // Create new user with those data below
       userData.password = hashed;
       const createdUser = await Users.create({
         userName: userData.userName,
@@ -33,21 +35,25 @@ exports.register = async (userData) => {
 
 exports.login = async (req, res, next) => {
   try {
+    // Extracting user credentials from the request body
     var userData = req.body;
     var email = userData.email;
     var password = userData.password;
+    //Check if the user exists in the database 
     const user = await userRepository.getUserByEmail(email);
     if (!user) {
       const error = new Error("Invalid Credentials");
       error.statusCode = 401;
       throw error;
     }
+    // Uses bcrpt to compare submitted password, with the hashed stored password    
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
       const error = new Error("Invalid Credentials");
       error.statusCode = 401;
       throw error;
     }
+    // create JWT that expires in 30 minutes 
     let token = jwt.sign({ uuid: user.uuid }, "thesecrettoken", {
       expiresIn: "30min",
     });
