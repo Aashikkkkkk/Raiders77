@@ -116,6 +116,8 @@ const Navbar = () => {
                 >
                   <ShoppingCart />
                 </Badge>
+                
+                 
               </IconButton>
               {auth && <Button onClick={logout}>Logout</Button>}
             </Box>

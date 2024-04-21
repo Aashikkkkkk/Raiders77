@@ -26,7 +26,7 @@ const AdminPage = () => {
         .then((res) => res.data),
     retry: 5,
   });
-  const tableHeaders = ['name', 'price', 'Action'];
+  const tableHeaders = ['NAME', 'PRICE', 'ACTION'];
   const tableDatas: TableData[] = fruits;
   const navigate = useNavigate();
   return (
